@@ -1,15 +1,29 @@
-import { Component } from 'react';
+import React from 'react';
 import Searchbar from './SearchBar/Searchbar';
 import PixaBay from '../API/PixaBay';
-import ModalWindow from './ModalWindow/ModalWindow';
-import ImageGallery from './ImageGallery/ImageGallery';
-import LoaderSpinner from './Loader/Loader';
-import Button from './Button/Button';
+import {ModalWindow} from './ModalWindow/ModalWindow';
+import {ImageGallery} from './ImageGallery/ImageGallery';
+import {LoaderSpinner} from './Loader/Loader';
+import {Button} from './Button/Button';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './App.module.css';
 
-class App extends Component {
+
+interface IState{
+  images: {}[],
+  page: number,
+  isLoading: boolean,
+  showModal: boolean,
+  largeimg?: string,
+  error: string | null,
+  searchInput: string,
+  status:string
+   
+}
+
+
+export class App extends React.Component <unknown, IState> {
   state = {
     searchInput: '',
     images: [],
@@ -18,9 +32,10 @@ class App extends Component {
     error: null,
     showModal: false,
     largeimg: '',
+    status:''
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_: unknown, prevState: { searchInput: string; }) {
     const previousInput = prevState.searchInput;
     const nextInput = this.state.searchInput;
     const nextPage = this.state.page;
@@ -63,7 +78,7 @@ class App extends Component {
     );
   };
 
-  onSearch = searchInput => {
+  onSearch = (searchInput: any) => {
     this.setState({ searchInput, page: 1, error: null });
   };
 
@@ -76,7 +91,7 @@ class App extends Component {
     }, 1000);
   };
 
-  modalWindowOpen = largeimg => {
+  modalWindowOpen = (largeimg: any) => {
     this.setState(() => ({
       largeimg: largeimg,
     }));
@@ -98,7 +113,7 @@ class App extends Component {
         )}
         {images.length >= 12 * page && <Button loadImages={this.onLoadMore} />}
         {largeimg && (
-          <ModalWindow onClose={this.modalWindowClose} src={largeimg} />
+          <ModalWindow onClose={this.modalWindowClose} largeimg={this.state.largeimg} />
         )}
         {error && <p className={styles.error}>{error}</p>}
         <ToastContainer autoClose={3000} />
@@ -106,4 +121,3 @@ class App extends Component {
     );
   }
 }
-export default App;

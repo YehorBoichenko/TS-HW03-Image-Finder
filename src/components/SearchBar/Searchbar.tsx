@@ -1,18 +1,19 @@
-import { Component } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '../SearchBar/Searchbar.module.css';
-import PropTypes from 'prop-types';
 
-export default class Searchbar extends Component {
-  static propTypes = {
-    onSubmit: PropTypes.func,
-  };
-
+interface IProps {
+  onSubmit: (arg: string) => void;
+}
+export default class Searchbar extends React.Component<
+  IProps,
+  { searchInput: string }
+> {
   state = {
     searchInput: '',
   };
-  handlerSubmit = event => {
+  handlerSubmit = (event: React.MouseEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (this.state.searchInput.trim() === '') {
       return toast.error('Please enter request');
@@ -20,7 +21,7 @@ export default class Searchbar extends Component {
     this.props.onSubmit(this.state.searchInput);
     this.setState({ searchInput: '' });
   };
-  handlerChange = event => {
+  handlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchInput: event.currentTarget.value.toLowerCase() });
   };
   render() {
