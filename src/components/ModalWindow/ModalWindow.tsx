@@ -4,7 +4,7 @@ import styles from '../ModalWindow/ModalWindow.module.css';
 
 interface  IProp {
   onClose: () => void
-  largeimg:string
+  largeimg: string
 }
 export class ModalWindow extends React.Component<IProp, unknown> {
 
@@ -34,7 +34,7 @@ export class ModalWindow extends React.Component<IProp, unknown> {
     return (
       <div className={styles.backdrop} onClick={this.backDropClick}>
         <div className={styles.modalOpen}>
-          <img className={styles.modalImg} src={this.props.largeimg} alt="picture" />
+          <img className={styles.modalImg} src={this.props.largeimg} alt="img"  />
         </div>
       </div>
     );
